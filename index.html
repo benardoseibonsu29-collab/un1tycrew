@@ -85,6 +85,20 @@ footer{padding:26px 0;color:#f4ead8;font-size:.9rem}
 .adm input[type=checkbox]{width:auto}.adm .frm{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:rgba(0,0,0,.35);padding:8px 12px;border-radius:10px;margin-bottom:8px}
 .th{width:44px;height:44px;border-radius:8px;object-fit:cover;background-size:cover}
+.co h3{font:800 calc(1.25rem*var(--k)) "Bricolage Grotesque",sans-serif;margin:0 0 calc(12px*var(--k))}.co h4{margin:calc(16px*var(--k)) 0 calc(8px*var(--k));font-size:calc(1rem*var(--k))}
+.co .card{background:var(--surface);color:var(--ink);border-radius:calc(14px*var(--k));padding:calc(18px*var(--k));margin-bottom:calc(16px*var(--k));max-width:min(100%,calc(560px*var(--k)))}
+.co input[type=text],.co input[type=email],.co input[type=tel],.co select{display:block;width:100%;margin-bottom:calc(10px*var(--k));font:400 calc(1rem*var(--k)) "DM Sans",sans-serif;padding:calc(14px*var(--k));border:1.5px solid #cfd6e0;border-radius:calc(12px*var(--k));background:#fff;color:var(--ink)}
+.co input.bad{border-color:var(--brick)}.co .g2{display:grid;grid-template-columns:1fr 1fr;gap:calc(10px*var(--k))}
+.co .pr{display:flex;gap:calc(12px*var(--k));align-items:flex-start;border:1.5px solid #cfd6e0;border-radius:calc(12px*var(--k));padding:calc(14px*var(--k));margin-bottom:calc(10px*var(--k));cursor:pointer;font-size:calc(1rem*var(--k))}
+.co .pr small,.co .bdg,.co .note{display:block;color:var(--muted);font-size:calc(.85rem*var(--k))}.co .pr:has(input:checked){border-color:#1a56db;background:#eef3ff}
+.co .pr input{width:calc(20px*var(--k));height:calc(20px*var(--k));margin-top:calc(2px*var(--k))}
+.co summary{cursor:pointer;font-weight:500;display:flex;justify-content:space-between;font-size:calc(1rem*var(--k))}
+.co .coi{display:flex;gap:calc(12px*var(--k));align-items:center;padding:calc(8px*var(--k)) 0;border-bottom:1px solid #e3e7ee;font-size:calc(.95rem*var(--k))}.co .coi div{flex:1}.co .coi small{display:block;color:var(--muted)}
+.co .coth{width:calc(48px*var(--k));height:calc(48px*var(--k));border-radius:calc(8px*var(--k));flex:none;background-size:cover}
+.co .srow{display:flex;justify-content:space-between;padding:calc(6px*var(--k)) 0;font-size:calc(.95rem*var(--k))}.co .tot{font-weight:800;border-top:1px solid #cfd6e0}
+.co .err{color:#ffb4a8;min-height:1.2em;font-size:calc(.95rem*var(--k))}.co .card a{color:#1a56db}
+.co .go{max-width:min(100%,calc(560px*var(--k)));margin-bottom:calc(14px*var(--k))}.co .ibx{color:var(--bg)}.co p,.co .back{font-size:calc(1rem*var(--k))}
+.page.co{padding-left:calc(46px*var(--k));padding-right:calc(46px*var(--k))}.co>h2{font-size:calc(2rem*var(--k))}
 :root{--k:1;--dw:min(calc(300px*var(--k)),84vw)}
 #drawer{width:var(--dw);padding-top:calc(env(safe-area-inset-top,0px) + 70px*var(--k))}
 body.open #menuBtn{left:var(--dw)}
@@ -190,7 +204,7 @@ function byId(i){return P.filter(function(p){return p.id===i})[0]}
 function bg(p){return p.img?"url('"+p.img+"') center/cover":p.k}
 function sz(x){return x==="Unica"?t("one"):x}
 function Lc(c){return t(c)}
-function card(p){var on=inCart(p.id);return '<article class="item"><div class="pic" style="background:'+bg(p)+'"><span>'+p.y+'</span></div><div class="info"><h3>'+p.n+'</h3><div class="meta">'+Lc(p.c)+' · '+t("size")+' '+sz(p.s)+'</div><div class="price">€'+p.p+'</div><button class="addb'+(on?' on':'')+'" data-add="'+p.id+'">'+(on?t("incart"):t("add"))+'</button></div></article>'}
+function card(p){var on=inCart(p.id);return '<article class="item"><div class="pic" style="background:'+bg(p)+'"><span>'+p.y+'</span></div><div class="info"><h3>'+esc(p.n)+'</h3><div class="meta">'+Lc(p.c)+' · '+t("size")+' '+sz(p.s)+'</div><div class="price">€'+p.p+'</div><button class="addb'+(on?' on':'')+'" data-add="'+p.id+'">'+(on?t("incart"):t("add"))+'</button></div></article>'}
 function cardId(i){return card(byId(i))}
 function fits(){var a=[];for(var i=1;i<=6;i++){var f=D.fits[i-1];a.push(f?'<div class="slot" style="padding:0;overflow:hidden"><img src="'+f+'" alt="Outfit '+i+'" style="width:100%;height:100%;object-fit:cover"></div>':'<div class="slot">FIT '+i+'<br>'+t("soon")+'</div>')}return a}
 var SEC={"top-seller":["TOP SELLER",function(){return TOP.map(cardId)}],"something-new":["SOMETHING NEW",function(){return NEW.map(cardId)}],"outfit-idea":["OUTFIT IDEA",fits]};
@@ -216,13 +230,15 @@ var app=document.getElementById("app"),brand=document.getElementById("brand"),li
 li.src=LOGO;
 function apply(p){var w0=Math.min(420,innerWidth*.8),w=w0+(84-w0)*p;li.style.width=w+"px";li.style.height=(w*ASP)+"px";sl.style.width=w+"px";sl.style.maxHeight=((1-p)*3)+"em";sl.style.opacity=Math.max(0,1-p*1.6)}
 function prog(){return isHome?Math.min(1,Math.max(0,scrollY/260)):1}
-function layout(){apply(0);var h0=brand.offsetHeight;apply(1);var h1=brand.offsetHeight;app.style.paddingTop=(isHome?h0:h1)+"px";apply(prog())}
+function layout(){apply(0);var h0=brand.offsetHeight;apply(1);var h1=brand.offsetHeight;var kk=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--k"))||1;app.style.paddingTop=(isHome?h0:Math.max(h1,66*kk))+"px";apply(prog())}
 
 function route(){
   var h=location.hash.slice(1)||"home",html;
   if(h==="chi-siamo")html=about();
   else if(SEC[h])html=secPage(h);
   else if(h==="admin")html=adminView();
+  else if(h==="checkout")html=checkoutView();
+  else if(h==="order-done")html=doneView();
   else if(h==="filtro")html=clothes("all");
   else if(L[h])html=clothes(h);
   else html=home();
@@ -230,8 +246,9 @@ function route(){
   app.querySelectorAll(".chip").forEach(function(b){b.onclick=function(){fs=b.dataset.s;route()}});
   app.querySelectorAll(".arrows button").forEach(function(b){b.onclick=function(){var s=b.closest(".blk").querySelector(".slider");s.scrollBy({left:+b.dataset.dir*520,behavior:"smooth"})}});
   if(h==="admin")adminBind();
+  if(h==="checkout")coBind();if(h==="order-done")doneBind();
   var y=document.getElementById("yr");if(y)y.onchange=function(){fy=y.value;route()};
-  isHome=!(h==="chi-siamo"||h==="filtro"||L[h]||SEC[h]||h==="admin");layout();window.scrollTo(0,0);setMenu(false);
+  isHome=!(h==="chi-siamo"||h==="filtro"||L[h]||SEC[h]||h==="admin"||h==="checkout"||h==="order-done");layout();window.scrollTo(0,0);setMenu(false);
 }
 function setMenu(o){document.body.classList.toggle("open",o);document.getElementById("menuBtn").setAttribute("aria-expanded",o);document.getElementById("menuBtn").setAttribute("aria-label",o?t("closeMenu"):t("openMenu"))}
 document.getElementById("menuBtn").onclick=function(){setMenu(!document.body.classList.contains("open"))};
@@ -284,8 +301,8 @@ ab:["Nous sommes 10 gars aux histoires, origines et cultures différentes, qui o
 };
 var lang="it";try{lang=localStorage.getItem("u1lang")||"it"}catch(e){}if(!T[lang])lang="it";
 function t(k){var v=T[lang][k];return v!==undefined?v:(T.it[k]!==undefined?T.it[k]:k)}
-function flag(l){
-  var c='<svg viewBox="15 0 30 30" aria-hidden="true"><defs><clipPath id="fc'+l+'"><circle cx="30" cy="15" r="15"/></clipPath></defs><g clip-path="url(#fc'+l+')">';
+var FCN=0;function flag(l){var n=++FCN;
+  var c='<svg viewBox="15 0 30 30" aria-hidden="true"><defs><clipPath id="fc'+l+n+'"><circle cx="30" cy="15" r="15"/></clipPath></defs><g clip-path="url(#fc'+l+n+')">';
   if(l==="it")c+='<rect x="15" width="10" height="30" fill="#009246"/><rect x="25" width="10" height="30" fill="#fff"/><rect x="35" width="10" height="30" fill="#ce2b37"/>';
   else if(l==="fr")c+='<rect x="15" width="10" height="30" fill="#0055a4"/><rect x="25" width="10" height="30" fill="#fff"/><rect x="35" width="10" height="30" fill="#ef4135"/>';
   else c+='<rect x="0" width="60" height="30" fill="#012169"/><path d="M0 0L60 30M60 0L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0L60 30M60 0L0 30" stroke="#c8102e" stroke-width="2"/><path d="M30 0V30M0 15H60" stroke="#fff" stroke-width="10"/><path d="M30 0V30M0 15H60" stroke="#c8102e" stroke-width="6"/>';
@@ -315,7 +332,7 @@ function acctRender(mode){
   var reg=mode==="reg";
   b.innerHTML='<p>'+t("accIntro")+'</p><div class="tabs"><button class="chip" data-m="login" aria-pressed="'+!reg+'">'+t("login")+'</button><button class="chip" data-m="reg" aria-pressed="'+reg+'">'+t("register")+'</button></div>'
    +(reg?'<input id="an2" type="text" autocomplete="name" placeholder="'+t("name")+'">':'')
-   +'<input id="ae" type="email" autocomplete="email" placeholder="'+t("email")+'"><input id="ap2" type="password" autocomplete="'+(reg?"new-password":"current-password")+'" placeholder="'+t("pass")+'"><p id="amsg"></p><button class="pbtn" id="sub">'+(reg?t("register"):t("login"))+'</button>';
+   +'<input id="ae" type="email" autocomplete="email" placeholder="'+t("email")+'"><input id="ap2" type="password" autocomplete="'+(reg?"new-password":"current-password")+'" placeholder="'+t("pass")+'"><p id="amsg"></p><button class="pbtn" id="subBtn">'+(reg?t("register"):t("login"))+'</button>';
   b.querySelectorAll("[data-m]").forEach(function(x){x.onclick=function(){acctRender(x.dataset.m)}});
   function go(){var e=$("ae").value.trim().toLowerCase(),p=$("ap2").value,n=reg?$("an2").value.trim():"",m=$("amsg");
     if(!/^\S+@\S+\.\S+$/.test(e)||p.length<6||(reg&&!n)){m.textContent=t("short");return}
@@ -324,7 +341,7 @@ function acctRender(mode){
       if(reg){if(us[e]){m.textContent=t("exists");return}us[e]={n:n,h:h};try{localStorage.setItem("u1users",JSON.stringify(us))}catch(x){}}
       else{if(!us[e]||us[e].h!==h){m.textContent=t("wrong");return}n=us[e].n}
       U={n:n,e:e};try{localStorage.setItem("u1user",JSON.stringify(U))}catch(x){}acctRender();updProf()})}
-  $("sub").onclick=go;b.querySelectorAll("input").forEach(function(i){i.onkeydown=function(e){if(e.key==="Enter")go()}})
+  $("subBtn").onclick=go;b.querySelectorAll("input").forEach(function(i){i.onkeydown=function(e){if(e.key==="Enter")go()}})
 }
 
 var payMode=false,payM="bank",IBAN="IT97Y0366901600991356255467";
@@ -355,11 +372,97 @@ $("langBtn").onclick=function(e){e.stopPropagation();var o=$("langMenu").classLi
 document.querySelectorAll("#langMenu button").forEach(function(b){b.onclick=function(){setLang(b.dataset.l)}});
 document.addEventListener("click",function(e){if(!e.target.closest(".lw")){$("langMenu").classList.remove("show");$("langBtn").setAttribute("aria-expanded","false")}});
 $("bagBtn").onclick=function(){var o=!document.body.classList.contains("cartopen");closeAll();if(o){renderCart();document.body.classList.add("cartopen")}};
-$("cartX").onclick=closeAll;$("orderBtn").onclick=function(){var it=cart.map(byId).filter(Boolean);if(!it.length)return;closeAll();payRender("bank");$("acct").classList.add("show")};$("acctX").onclick=closeAll;
+$("cartX").onclick=closeAll;$("orderBtn").onclick=function(){var it=cart.map(byId).filter(Boolean);if(!it.length)return;closeAll();location.hash="#checkout"};$("acctX").onclick=closeAll;
 $("profBtn").onclick=function(){closeAll();acctRender();$("acct").classList.add("show")};
 $("acct").onclick=function(e){if(e.target===this)closeAll()};
 $("veil").onclick=closeAll;
 document.addEventListener("keydown",function(e){if(e.key==="Escape")closeAll()});
+
+var CFG={stripeEndpoint:"",supaUrl:"https://cujunqrqmmydlxzrepvb.supabase.co",supaKey:"sb_publishable_qF78ZwbfVgtQ8CqXXzAXNQ_ZOK2uHF3",shipFee:null};
+Object.assign(T.it,{coTitle:"Checkout",sumT:"Riepilogo ordine",ship:"Spedizione",shipTbd:"Costo e modalità di spedizione confermati su WhatsApp",free:"Gratis",contact:"Contatti",signin:"Accedi",delivery:"Consegna",fn:"Nome",ln:"Cognome",addr:"Indirizzo",apt:"Interno, scala, ecc.",zip:"CAP",city:"Città",prov:"Provincia",phone:"Telefono",opt:"facoltativo",shipMethod:"Metodo di spedizione",secure:"Tutte le transazioni sono sicure e crittografate.",online:"Carta e portafogli digitali",onlineSub:"Pagamento sicuro sulla pagina di Stripe",onlineSubWa:"Ti inviamo il link di pagamento su WhatsApp",place:"Conferma ordine",req:"Compila tutti i campi obbligatori con dati validi.",errNet:"Impossibile avviare il pagamento. Riprova o scegli il bonifico.",doneT:"Ordine ricevuto",paidP:"Grazie! Il pagamento è stato completato. Riceverai la conferma via email.",ref:"Riferimento ordine",sendWa:"Invia l’ordine su WhatsApp",finish:"Fine",waLink:"Invia l’ordine su WhatsApp: ti risponderemo con il link per pagare.",causale2:"Causale",accOff:"Gli account non sono ancora disponibili: puoi ordinare come ospite.",mailSent:"Controlla la tua email per confermare l’account."});
+Object.assign(T.en,{coTitle:"Checkout",sumT:"Order summary",ship:"Shipping",shipTbd:"Shipping cost and method confirmed on WhatsApp",free:"Free",contact:"Contact",signin:"Sign in",delivery:"Delivery",fn:"First name",ln:"Last name",addr:"Address",apt:"Apartment, suite, etc.",zip:"Postcode",city:"City",prov:"Province",phone:"Phone",opt:"optional",shipMethod:"Shipping method",secure:"All transactions are secure and encrypted.",online:"Card and digital wallets",onlineSub:"Secure payment on the Stripe page",onlineSubWa:"We’ll send you the payment link on WhatsApp",place:"Place order",req:"Please fill in all required fields with valid details.",errNet:"Couldn’t start the payment. Try again or choose bank transfer.",doneT:"Order received",paidP:"Thank you! Your payment is complete. You’ll get a confirmation by email.",ref:"Order reference",sendWa:"Send the order on WhatsApp",finish:"Done",waLink:"Send the order on WhatsApp: we’ll reply with the payment link.",causale2:"Reference",accOff:"Accounts aren’t available yet: you can order as a guest.",mailSent:"Check your email to confirm your account."});
+Object.assign(T.fr,{coTitle:"Paiement",sumT:"Récapitulatif",ship:"Livraison",shipTbd:"Frais et mode de livraison confirmés sur WhatsApp",free:"Gratuit",contact:"Contact",signin:"Se connecter",delivery:"Livraison",fn:"Prénom",ln:"Nom",addr:"Adresse",apt:"Appartement, etc.",zip:"Code postal",city:"Ville",prov:"Province",phone:"Téléphone",opt:"facultatif",shipMethod:"Mode de livraison",secure:"Toutes les transactions sont sécurisées et chiffrées.",online:"Carte et portefeuilles numériques",onlineSub:"Paiement sécurisé sur la page Stripe",onlineSubWa:"Nous vous envoyons le lien de paiement sur WhatsApp",place:"Confirmer la commande",req:"Remplissez tous les champs obligatoires avec des données valides.",errNet:"Impossible de lancer le paiement. Réessayez ou choisissez le virement.",doneT:"Commande reçue",paidP:"Merci ! Votre paiement est terminé. Vous recevrez une confirmation par e-mail.",ref:"Référence de commande",sendWa:"Envoyer la commande sur WhatsApp",finish:"Terminé",waLink:"Envoyez la commande sur WhatsApp : nous répondrons avec le lien de paiement.",causale2:"Référence",accOff:"Les comptes ne sont pas encore disponibles : vous pouvez commander en tant qu’invité.",mailSent:"Vérifiez votre e-mail pour confirmer votre compte."});
+function coItems(){return cart.map(byId).filter(Boolean)}
+function coTot(){return coItems().reduce(function(a,p){return a+p.p},0)}
+function shipTxt(){return CFG.shipFee===null?t("shipTbd"):(CFG.shipFee>0?"€"+CFG.shipFee:t("free"))}
+function fld(id,k,type,ac,req){return '<input id="co_'+id+'" type="'+(type||"text")+'" placeholder="'+t(k)+(req===false?" ("+t("opt")+")":"")+'" autocomplete="'+ac+'">'}
+function checkoutView(){
+  var it=coItems();
+  if(!it.length)return '<div class="page co"><h2>'+t("coTitle")+'</h2><p>'+t("bagEmpty")+'</p><p><a class="back" href="#home">← '+t("home")+'</a></p></div>';
+  var tot=coTot()+(CFG.shipFee||0),on=!!CFG.stripeEndpoint;
+  var rows=it.map(function(p){return '<div class="coi"><span class="coth" style="background:'+bg(p)+'"></span><div><b>'+esc(p.n)+'</b><small>'+t("size")+' '+sz(p.s)+' · '+p.y+'</small></div><span>€'+p.p+'</span></div>'}).join("");
+  var cs=["Italia","France","Deutschland","España","Schweiz","United Kingdom"].map(function(c){return '<option>'+c+'</option>'}).join("");
+  return '<div class="page co"><h2>'+t("coTitle")+'</h2>'
+  +'<details class="card"><summary><span>'+t("sumT")+'</span><b>€'+tot+'</b></summary>'+rows+'<div class="srow"><span>'+t("ship")+'</span><span>'+(CFG.shipFee===null?"—":shipTxt())+'</span></div><div class="srow tot"><span>'+t("total")+'</span><span>€'+tot+'</span></div></details>'
+  +'<div class="card"><h3>'+t("contact")+(U?'':' <a href="#" id="co_login" style="font:400 .8em DM Sans,sans-serif">'+t("signin")+'</a>')+'</h3>'+fld("email","email","email","email")+'</div>'
+  +'<div class="card"><h3>'+t("delivery")+'</h3><select id="co_country" autocomplete="country-name">'+cs+'</select>'+fld("fn","fn","text","given-name")+fld("ln","ln","text","family-name")+fld("addr","addr","text","address-line1")+fld("apt","apt","text","address-line2",false)+'<div class="g2">'+fld("zip","zip","text","postal-code")+fld("city","city","text","address-level2")+'</div>'+fld("prov","prov","text","address-level1")+fld("phone","phone","tel","tel",false)+'<h4>'+t("shipMethod")+'</h4><span class="note">'+(CFG.shipFee===null?t("shipTbd"):t("ship")+': '+shipTxt())+'</span></div>'
+  +'<div class="card"><h3>'+t("payT")+'</h3><span class="note" style="margin-bottom:10px">'+t("secure")+'</span>'
+  +'<label class="pr"><input type="radio" name="co_pay" value="online" checked><span><b>'+t("online")+'</b><small>'+(on?t("onlineSub"):t("onlineSubWa"))+'</small><span class="bdg">Visa · Mastercard · Apple Pay · Google Pay · PayPal · Satispay · Klarna</span></span></label>'
+  +'<label class="pr"><input type="radio" name="co_pay" value="bank"><span><b>'+t("bank")+'</b><small>'+t("bankSub")+'</small></span></label></div>'
+  +'<p class="err" id="co_msg"></p><button class="pbtn go" id="co_go">'+t("place")+' · €'+tot+'</button><p><a class="back" href="#home">← '+t("home")+'</a></p></div>'}
+function coBind(){
+  var g=function(i){return $("co_"+i)};
+  if(U){g("email").value=U.e;g("fn").value=U.n}
+  var lg=$("co_login");if(lg)lg.onclick=function(e){e.preventDefault();$("profBtn").click()};
+  $("co_go").onclick=function(){
+    var msg=$("co_msg"),bad=false;
+    ["email","fn","ln","addr","zip","city","prov"].forEach(function(k){var el=g(k),v=el.value.trim(),okv=k==="email"?/^\S+@\S+\.\S+$/.test(v):v.length>0;el.classList.toggle("bad",!okv);if(!okv)bad=true});
+    if(bad){msg.textContent=t("req");return}
+    msg.textContent="";
+    var c={email:g("email").value.trim(),country:g("country").value,fn:g("fn").value.trim(),ln:g("ln").value.trim(),addr:g("addr").value.trim(),apt:g("apt").value.trim(),zip:g("zip").value.trim(),city:g("city").value.trim(),prov:g("prov").value.trim(),phone:g("phone").value.trim()};
+    var pay=document.querySelector("input[name=co_pay]:checked").value,tot=coTot()+(CFG.shipFee||0);
+    var o={ref:"UC-"+Date.now().toString(36).toUpperCase().slice(-6),items:coItems().map(function(p){return{id:p.id,n:p.n,s:p.s,p:p.p}}),total:tot,pay:pay,c:c,lang:lang};
+    try{sessionStorage.setItem("u1last",JSON.stringify(o))}catch(e){}
+    sbOrder(o);
+    if(pay==="online"&&CFG.stripeEndpoint){var b=$("co_go");b.disabled=true;b.textContent="…";
+      fetch(CFG.stripeEndpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({ids:o.items.map(function(x){return x.id}),c:c,ref:o.ref,lang:lang})}).then(function(r){return r.json()}).then(function(j){if(!j.url)throw 0;try{sessionStorage.setItem("u1pay",o.ref)}catch(e){}location.href=j.url}).catch(function(){b.disabled=false;b.textContent=t("place")+" · €"+tot;msg.textContent=t("errNet")})}
+    else location.hash="#order-done"}}
+function orderMsg2(o){var c=o.c;return t("msgHead")+"\n"+o.items.map(function(p){return "- "+p.n+" ("+t("msgSize")+" "+sz(p.s)+") – €"+p.p}).join("\n")+"\n"+t("msgTot")+": €"+o.total+"\n"+t("msgPay")+": "+(o.pay==="bank"?t("bank"):t("online"))+"\nRef: "+o.ref+"\n"+c.fn+" "+c.ln+" · "+c.email+(c.phone?" · "+c.phone:"")+"\n"+c.addr+(c.apt?" "+c.apt:"")+", "+c.zip+" "+c.city+" ("+c.prov+"), "+c.country}
+function doneView(){
+  var o=null,paid=false;try{o=JSON.parse(sessionStorage.getItem("u1last"));paid=!!sessionStorage.getItem("u1pay")}catch(e){}
+  if(paid||!o)return '<div class="page co"><h2>'+t("doneT")+'</h2><div class="card"><p>'+t("paidP")+'</p>'+(o?'<p><b>'+t("ref")+': '+esc(o.ref)+'</b></p>':'')+'</div><a class="pbtn go" href="#home">'+t("finish")+'</a></div>';
+  return '<div class="page co"><h2>'+t("doneT")+'</h2><div class="card"><p><b>'+t("ref")+': '+esc(o.ref)+'</b> · '+t("total")+': €'+o.total+'</p>'
+  +(o.pay==="bank"?'<div class="ibx" style="color:var(--bg)"><small>'+t("ibanL")+'</small><code>'+ibanFmt()+'</code><button class="chip" id="cpI">'+t("copy")+'</button><small>'+t("causale2")+': '+esc(o.ref)+'</small></div>':'<p>'+t("waLink")+'</p>')
+  +'<a class="obtn" id="payGo" target="_blank" rel="noopener" href="https://wa.me/'+WANUM+'?text='+encodeURIComponent(orderMsg2(o))+'">'+t("sendWa")+'</a></div><button class="pbtn go" id="fin">'+t("finish")+'</button></div>'}
+function clearCart(){cart=[];saveCart();renderCart();syncAdd();try{sessionStorage.removeItem("u1pay")}catch(e){}}
+function doneBind(){
+  var paid=false;try{paid=!!sessionStorage.getItem("u1pay")}catch(e){}if(paid)clearCart();
+  var f=$("fin");if(f)f.onclick=function(){clearCart();location.hash="#home"};
+  var c=$("cpI");if(c)c.onclick=function(){if(navigator.clipboard)navigator.clipboard.writeText(IBAN).then(function(){c.textContent=t("copied")},function(){prompt("IBAN",IBAN)});else prompt("IBAN",IBAN)}}
+var SBK="u1sess";
+function sbH(x){var h={"apikey":CFG.supaKey,"Content-Type":"application/json"};for(var k in x)h[k]=x[k];return h}
+function sbGet(){try{return JSON.parse(localStorage.getItem(SBK))}catch(e){return null}}
+function sbSet(r){var u=r.user||{},s={at:r.access_token,rt:r.refresh_token,n:(u.user_metadata&&u.user_metadata.name)||(u.email||"").split("@")[0],e:u.email};try{localStorage.setItem(SBK,JSON.stringify(s))}catch(e){}U={n:s.n,e:s.e};updProf()}
+function sbClear(){try{localStorage.removeItem(SBK)}catch(e){}U=null;updProf()}
+function sbAuth(reg,n,e,p){
+  return fetch(CFG.supaUrl+(reg?"/auth/v1/signup":"/auth/v1/token?grant_type=password"),{method:"POST",headers:sbH(),body:JSON.stringify(reg?{email:e,password:p,data:{name:n}}:{email:e,password:p})})
+  .then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})}).then(function(x){
+    if(!x.ok){var m=(x.j.error_description||x.j.msg||x.j.message||"")+"";throw new Error(/already/i.test(m)?t("exists"):/invalid|credentials/i.test(m)?t("wrong"):m||t("errNet"))}
+    if(!x.j.access_token)return "confirm";sbSet(x.j);return "ok"})}
+function sbOut(){var s=sbGet();if(s)fetch(CFG.supaUrl+"/auth/v1/logout",{method:"POST",headers:sbH({"Authorization":"Bearer "+s.at})}).catch(function(){});sbClear()}
+function sbInit(){
+  if(!CFG.supaUrl)return;var s=sbGet();if(!s)return;U={n:s.n,e:s.e};updProf();
+  fetch(CFG.supaUrl+"/auth/v1/user",{headers:sbH({"Authorization":"Bearer "+s.at})}).then(function(r){
+    if(r.ok)return;
+    return fetch(CFG.supaUrl+"/auth/v1/token?grant_type=refresh_token",{method:"POST",headers:sbH(),body:JSON.stringify({refresh_token:s.rt})}).then(function(r2){return r2.ok?r2.json().then(sbSet):sbClear()})}).catch(function(){})}
+function sbOrder(o){
+  if(!CFG.supaUrl)return;var s=sbGet();
+  fetch(CFG.supaUrl+"/rest/v1/orders",{method:"POST",headers:sbH(s&&s.at?{"Authorization":"Bearer "+s.at,"Prefer":"return=minimal"}:{"Prefer":"return=minimal"}),body:JSON.stringify({ref:o.ref,email:o.c.email,customer:o.c,items:o.items,total:o.total,pay:o.pay,status:"new"})}).catch(function(){})}
+function acctRender(mode){
+  var b=$("acctBody");payMode=false;$("acctT").textContent=t("account");
+  if(!CFG.supaUrl){b.innerHTML='<p>'+t("accOff")+'</p>';return}
+  if(U){b.innerHTML='<h3>'+t("hello")+', '+esc(U.n)+'</h3><p>'+esc(U.e)+'</p><button class="pbtn" id="lo">'+t("logout")+'</button>';$("lo").onclick=function(){sbOut();acctRender()};return}
+  var reg=mode==="reg";
+  b.innerHTML='<p>'+t("accIntro")+'</p><div class="tabs"><button class="chip" data-m="login" aria-pressed="'+!reg+'">'+t("login")+'</button><button class="chip" data-m="reg" aria-pressed="'+reg+'">'+t("register")+'</button></div>'
+   +(reg?'<input id="an2" type="text" autocomplete="name" placeholder="'+t("name")+'">':'')
+   +'<input id="ae" type="email" autocomplete="email" placeholder="'+t("email")+'"><input id="ap2" type="password" autocomplete="'+(reg?"new-password":"current-password")+'" placeholder="'+t("pass")+'"><p id="amsg"></p><button class="pbtn" id="subBtn">'+(reg?t("register"):t("login"))+'</button>';
+  b.querySelectorAll("[data-m]").forEach(function(x){x.onclick=function(){acctRender(x.dataset.m)}});
+  function go(){var e=$("ae").value.trim().toLowerCase(),p=$("ap2").value,n=reg?$("an2").value.trim():"",m=$("amsg");
+    if(!/^\S+@\S+\.\S+$/.test(e)||p.length<6||(reg&&!n)){m.textContent=t("short");return}
+    $("subBtn").disabled=true;
+    sbAuth(reg,n,e,p).then(function(r){if(r==="confirm"){m.textContent=t("mailSent");$("subBtn").disabled=false;return}acctRender()}).catch(function(x){m.textContent=x.message;$("subBtn").disabled=false})}
+  $("subBtn").onclick=go;b.querySelectorAll("input").forEach(function(i){i.onkeydown=function(e){if(e.key==="Enter")go()}})}
+U=null;sbInit();
 applyStatic();updProf();renderCart();
 window.addEventListener("hashchange",route);route();
 </script>
